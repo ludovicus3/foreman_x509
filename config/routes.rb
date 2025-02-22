@@ -1,9 +1,12 @@
 ForemanPluginTemplate::Engine.routes.draw do
-  get 'new_action', to: 'example#new_action', as: 'new_action'
-  get 'plugin_template_description', to: 'example#react_template_page_description'
-  get 'welcome', to: '/react#index', as: 'welcome'
+  resources :certificates, except: [:edit] do
+    member do
+      get :certificate
+      get :key
+    end
+  end
 end
 
 Foreman::Application.routes.draw do
-  mount ForemanPluginTemplate::Engine, at: '/foreman_plugin_template'
+  mount ForemanPluginTemplate::Engine, at: '/foreman_x509'
 end
