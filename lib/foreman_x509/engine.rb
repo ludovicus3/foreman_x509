@@ -13,7 +13,7 @@ module ForemanX509
     initializer 'foreman_x509.register_plugin', :before => :finisher_hook do |app|
       app.reloader.to_prepare do
         Foreman::Plugin.register :foreman_x509 do
-          requires_foreman '>= 3.11.0'
+          requires_foreman '>= 3.1.1'
           register_gettext
 
           # Add Global files for extending foreman-core components and routes
