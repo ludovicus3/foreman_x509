@@ -1,4 +1,4 @@
 require 'foreman_x509/engine'
 
-module ForemanPluginTemplate
+module ForemanX509
 end

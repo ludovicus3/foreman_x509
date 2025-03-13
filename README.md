@@ -1,4 +1,4 @@
-# ForemanPluginTemplate
+# ForemanX509
 
 *Introdction here*
 

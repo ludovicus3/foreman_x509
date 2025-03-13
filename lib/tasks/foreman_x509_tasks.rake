@@ -12,7 +12,7 @@ end
 
 # Tests
 namespace :test do
-  desc 'Test ForemanPluginTemplate'
+  desc 'Test ForemanX509'
   Rake::TestTask.new(:foreman_x509) do |t|
     test_dir = File.expand_path('../../test', __dir__)
     t.libs << 'test'

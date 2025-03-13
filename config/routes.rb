@@ -1,4 +1,4 @@
-ForemanPluginTemplate::Engine.routes.draw do
+ForemanX509::Engine.routes.draw do
   resources :certificates, except: [:edit] do
     resources :generations, 
     member do
@@ -9,5 +9,5 @@ ForemanPluginTemplate::Engine.routes.draw do
 end
 
 Foreman::Application.routes.draw do
-  mount ForemanPluginTemplate::Engine, at: '/foreman_x509'
+  mount ForemanX509::Engine, at: '/foreman_x509'
 end

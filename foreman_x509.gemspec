@@ -2,7 +2,7 @@ require File.expand_path('lib/foreman_x509/version', __dir__)
 
 Gem::Specification.new do |s|
   s.name        = 'foreman_x509'
-  s.version     = ForemanPluginTemplate::VERSION
+  s.version     = ForemanX509::VERSION
   s.metadata    = { 'is_foreman_plugin' => 'true' }
   s.license     = 'GPL-3.0'
   s.authors     = ['Jason Galens']
