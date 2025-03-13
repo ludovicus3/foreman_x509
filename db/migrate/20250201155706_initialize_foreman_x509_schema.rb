@@ -21,7 +21,7 @@ class InitializeForemanX509Schema < ActiveRecord::Migration[6.0]
     create_table :foreman_x509_issuers do |t|
       t.bigint :certificate_id, null: false
       t.bigint :serial
-      t.bitint :crl_number
+      t.bigint :crl_number
       t.text   :certificate_revocation_list
 
       t.timestamps
