@@ -14,7 +14,6 @@ module ForemanX509
       app.reloader.to_prepare do
         Foreman::Plugin.register :foreman_x509 do
           requires_foreman '>= 3.1.1'
-          register_gettext
 
           # Add Global files for extending foreman-core components and routes
           # register_global_js_file 'global'
