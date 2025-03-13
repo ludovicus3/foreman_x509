@@ -13,7 +13,7 @@ module ForemanX509
     end
 
     initializer 'foreman_x509.register_plugin', :before => :finisher_hook do |app|
-      require 'foreman_patch/plugin'
+      require 'foreman_x509/plugin'
     end
 
     # Include concerns in this config.to_prepare block
@@ -32,7 +32,7 @@ module ForemanX509
   end
 
   def self.table_name_prefix
-    'foreman_patch_'
+    'foreman_x509_'
   end
 
 
