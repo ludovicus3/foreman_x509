@@ -1,5 +1,6 @@
 ForemanPluginTemplate::Engine.routes.draw do
   resources :certificates, except: [:edit] do
+    resources :generations, 
     member do
       get :certificate
       get :key

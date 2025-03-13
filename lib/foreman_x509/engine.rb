@@ -21,8 +21,9 @@ module ForemanX509
 
           # Add permissions
           security_block :foreman_x509 do
-            permission :view_foreman_x509, { :'foreman_x509/example' => [:new_action],
-                                                        :react => [:index] }
+            permission :view_foreman_x509_certificates, { :certificates => [:index, :show, :certificate, :key] }
+            permission :create_foreman_x509_certificates, { :certificates => [:new, :create] }
+            permission :destroy_foreman_x509_certificates, { :certificates => [:destroy] }
           end
 
           # Add a new role called 'Discovery' if it doesn't exist
