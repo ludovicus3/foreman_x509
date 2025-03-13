@@ -3,7 +3,7 @@ module ForemanX509
     include ForemanX509::Subject
     
     belongs_to :certificate, class_name: 'ForemanX509::Certificate'
-    accept_nested_attributes_for :certificate
+    accepts_nested_attributes_for :certificate
 
     has_many :certificates, class_name: 'ForemanX509::Certificate', inverse_of: :issuer
 

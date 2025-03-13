@@ -7,7 +7,7 @@ module ForemanX509
     belongs_to :issuer, class_name: 'ForemanX509::Issuer', inverse_of: :certificates
 
     has_many :generations, class_name: 'ForemanX509::Generation', foreign_key: :owner_id, inverse_of: :owner
-    accept_nested_attributes_for :generations
+    accepts_nested_attributes_for :generations
     has_one :active_generation, -> { where(generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
     
     serialize :configuration, coder: ForemanX509::ConfigurationSerializer, type: OpenSSL::Config
