@@ -3,6 +3,8 @@ module ForemanX509
     isolate_namespace ForemanX509
     engine_name 'foreman_x509'
 
+    config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
+    
     # Add any db migrations
     initializer 'foreman_x509.load_app_instance_data' do |app|
       ForemanX509::Engine.paths['db/migrate'].existent.each do |path|
