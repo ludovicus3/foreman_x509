@@ -8,7 +8,7 @@ module ForemanX509
     has_many :certificates, class_name: 'ForemanX509::Certificate', inverse_of: :issuer
 
     attribute :serial, default: -> { SecureRandom.hex(8).to_i(16) }
-    serialize :certificate_revocation_list, coder: ForemanX509::CertificateRevocationListSerializer, object: OpenSSL::X509::CRL
+    serialize :certificate_revocation_list, ForemanX509::CertificateRevocationListSerializer
 
     delegate :name, :description, :configuration, to: :certificate
 

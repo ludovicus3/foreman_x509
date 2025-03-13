@@ -10,7 +10,7 @@ module ForemanX509
     accepts_nested_attributes_for :generations
     has_one :active_generation, -> { where(generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
     
-    serialize :configuration, coder: ForemanX509::ConfigurationSerializer, type: OpenSSL::Config
+    serialize :configuration, ForemanX509::ConfigurationSerializer
 
     delegate :certificate, :key, to: :active_generation, allow_nil: true
 

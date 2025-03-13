@@ -3,8 +3,8 @@ module ForemanX509
     belongs_to :owner, class_name: 'ForemanX509::Certificate', inverse_of: :generations
     has_one :issuer, through: :owner, class_name: 'ForemanX509::Issuer'
     
-    serialize :certificate, coder: ForemanX509::CertificateSerializer, type: OpenSSL::X509::Certificate
-    serialize :key, coder: ForemanX509::KeySerializer, type: OpenSSL::PKey::PKey
+    serialize :certificate, ForemanX509::CertificateSerializer
+    serialize :key, ForemanX509::KeySerializer
 
     validates :active, uniqueness: { scope: :owner_id }, if: :active?
 
