@@ -7,12 +7,12 @@ module ForemanX509
     belongs_to :issuer, class_name: 'ForemanX509::Issuer', inverse_of: :certificates
 
     has_many :generations, class_name: 'ForemanX509::Generation', foreign_key: :owner_id, inverse_of: :owner
-    accepts_nested_attributes_for :generations
-    has_one :active_generation, -> { where(foreman_x509_generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
+    has_one :generation, -> { where(foreman_x509_generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
+    accepts_nested_attributes_for :generation
     
     serialize :configuration, ForemanX509::ConfigurationSerializer
 
-    delegate :certificate, :key, to: :active_generation, allow_nil: true
+    delegate :certificate, :key, to: :generation, allow_nil: true
 
     validates :name, format: { with: /\A[a-z][a-z0-9.-]*(?<!-)\z/, message: _("Invalid name format!") }
 
