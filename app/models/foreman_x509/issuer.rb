@@ -10,6 +10,6 @@ module ForemanX509
     serialize :serial, ForemanX509::BigNumberSerializer
     serialize :certificate_revocation_list, ForemanX509::CertificateRevocationListSerializer
 
-    delegate :name, :description, :configuration, to: :certificate
+    delegate :name, :description, :configuration, :configuration=, to: :certificate
   end
 end
