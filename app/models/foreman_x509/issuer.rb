@@ -11,7 +11,5 @@ module ForemanX509
     serialize :certificate_revocation_list, ForemanX509::CertificateRevocationListSerializer
 
     delegate :name, :description, :configuration, to: :certificate
-
-    scoped_search relation:
   end
 end
