@@ -12,6 +12,8 @@ module ForemanX509
 
     def activate!
       update!(active: true)
+    end
+    
     private
 
     def deactivate_previous_generation

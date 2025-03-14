@@ -9,6 +9,8 @@ class InitializeForemanX509Schema < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
+    add_index :foreman_x509_certificates, :name, unique: true, name: :foreman_x509_certificates_by_name
+
     create_table :foreman_x509_generations do |t|
       t.bigint  :owner_id, null: false
       t.boolean :active, null: false, default: false
