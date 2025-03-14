@@ -13,11 +13,11 @@ module ForemanX509
     def activate!
       update!(active: true)
     end
-    
+
     private
 
     def deactivate_previous_generation
-      owner.generations.where(active: true).update_all(active: false)
+      owner.generations.where(active: true).update_all(active: false) unless owner.nil?
     end
   end
 end
