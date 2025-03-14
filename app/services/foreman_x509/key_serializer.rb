@@ -2,7 +2,7 @@ module ForemanX509
   class KeySerializer
 
     def self.dump(object)
-      object.to_pem unless object.blank?
+      object.to_s unless object.blank?
     end
 
     def self.load(data)
