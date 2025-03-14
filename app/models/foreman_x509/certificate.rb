@@ -8,7 +8,7 @@ module ForemanX509
 
     has_many :generations, class_name: 'ForemanX509::Generation', foreign_key: :owner_id, inverse_of: :owner
     accepts_nested_attributes_for :generations
-    has_one :active_generation, -> { where(generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
+    has_one :active_generation, -> { where(foreman_x509_generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
     
     serialize :configuration, ForemanX509::ConfigurationSerializer
 

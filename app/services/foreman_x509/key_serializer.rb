@@ -6,7 +6,7 @@ module ForemanX509
     end
 
     def self.load(data)
-      OpenSSL::PKey.load(data) unless data.blank?
+      OpenSSL::PKey.read(data) unless data.blank?
     end
 
   end
