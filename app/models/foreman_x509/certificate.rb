@@ -1,6 +1,8 @@
 module ForemanX509
   class Certificate < ::ApplicationRecord
     include ForemanX509::Subject
+    include ForemanX509::Extensions
+    include ForemanX509::Digest
     extend FriendlyId
     friendly_id :name
 
@@ -40,6 +42,14 @@ module ForemanX509
 
     def externally_signed?
       certificate.exists? and issuer.nil?
+    end
+
+    def requested_extensions
+      extensions_from_section(configuration.get_value('req', 'req_extensions'))
+    end
+
+    def certificate_extensions_section
+      configuration.get_value('req', 'x509_extensions')
     end
 
     private
