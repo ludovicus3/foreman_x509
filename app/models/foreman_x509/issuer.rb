@@ -7,9 +7,9 @@ module ForemanX509
 
     has_many :certificates, class_name: 'ForemanX509::Certificate', inverse_of: :issuer
 
-    serialize :serial, ForemanX509::BigNumberSerializer
-    serialize :certificate_revocation_list, ForemanX509::CertificateRevocationListSerializer
+    serialize :serial, ForemanX509::Serializer::BigNumber
+    serialize :certificate_revocation_list, ForemanX509::Serializer::CertificateRevocationList
 
-    delegate :name, :description, :configuration, :configuration=, to: :certificate
+    delegate :name, :description, :description=, :configuration, :configuration=, to: :certificate
   end
 end

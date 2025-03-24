@@ -3,8 +3,8 @@ module ForemanX509
     belongs_to :owner, class_name: 'ForemanX509::Certificate', inverse_of: :generations
     has_one :issuer, through: :owner, class_name: 'ForemanX509::Issuer'
     
-    serialize :certificate, ForemanX509::CertificateSerializer
-    serialize :key, ForemanX509::KeySerializer
+    serialize :certificate, ForemanX509::Serializer::Certificate
+    serialize :key, ForemanX509::Serializer::Key
 
     before_save :deactivate_previous_generation, if: :active?
 

@@ -10,11 +10,13 @@ module ForemanX509
     has_one :generation, -> { where(foreman_x509_generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
     accepts_nested_attributes_for :generation
     
-    serialize :configuration, ForemanX509::ConfigurationSerializer
+    serialize :configuration, ForemanX509::Serializer::Configuration
 
     delegate :certificate, :key, to: :generation, allow_nil: true
 
     validates :name, format: { with: /\A[a-z][a-z0-9.-]*(?<!-)\z/, message: _("Invalid name format!") }
+    validates :certificate, presence: true, if: -> { configuration.nil? }
+    validate :configuration_has_required_fields, unless: -> { configuration.nil? }
 
     before_save :ensure_active_generation, if: -> { generations.empty? }
 
@@ -41,6 +43,10 @@ module ForemanX509
     end
 
     private
+
+    def configuration_has_required_fields
+      errors.add("Configuration missing distinguished name definition") if subject_from_configuration.nil?
+    end
 
     def ensure_active_generation
       return if configuration.nil?
