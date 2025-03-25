@@ -34,13 +34,12 @@ module ForemanX509
 
     def end_date
       end_date = configuration.get_value(authority_section, 'default_enddate')
-      end_date = Time.parse(end_date) unless end_date.nil?
       if end_date.nil?
-        days = configuration.get_value(authority_section, 'default_days').to_i.days
-        end_date = start_date + days
+        duration = configuration.get_value(authority_section, 'default_days')
+        start_date + (duration.nil? ? 3650.days : duration.to_i.days) # TODO: make Setting[:default_certificate_days]
+      else
+        Time.parse(end_date)
       end
-      end_date ||= start_date + 3650.days # TODO: make Setting[:default_certificate_days]
-      end_date
     end
 
     def certificate_extensions(requested_extensions, section = nil)
