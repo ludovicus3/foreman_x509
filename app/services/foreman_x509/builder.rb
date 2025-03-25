@@ -48,7 +48,7 @@ module ForemanX509
         certificate.add_extension extension
       end
       
-      certifcate.sign(signing_key, issuer.digest)
+      certificate.sign(signing_key, issuer.digest)
     end
 
     def build_request
