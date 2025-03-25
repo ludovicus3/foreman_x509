@@ -22,7 +22,7 @@ module ForemanX509
 
     def serial!
       next_serial = serial || SecureRandom.hex(16)
-      update_attribute(serial: next_serial + 1) unless new_record?
+      update_attribute(:serial, next_serial + 1) unless new_record?
       next_serial
     end
 
