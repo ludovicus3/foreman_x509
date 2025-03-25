@@ -80,7 +80,7 @@ module ForemanX509
     end
 
     def key_bits
-      subject.configuration.get_value('req', 'default_bits') || 4096
+      subject.configuration.get_value('req', 'default_bits').to_i || 4096
     end
 
     def extension_factory
