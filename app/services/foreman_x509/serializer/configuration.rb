@@ -6,7 +6,11 @@ module ForemanX509
       end
 
       def self.load(data)
-        OpenSSL::Config.parse(data) unless data.blank?
+        if data.blank?
+          OpenSSL::Config.new
+        else
+          OpenSSL::Config.parse(data)
+        end
       end
     end
   end
