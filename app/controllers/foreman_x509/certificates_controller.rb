@@ -6,7 +6,7 @@ module ForemanX509
     before_action :find_resource, except: [:index, :new, :create]
 
     def index
-      @certificates = resource_base
+      @certificates = resource_base_search_and_page
     end
 
     def new
