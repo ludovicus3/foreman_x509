@@ -39,11 +39,11 @@ module ForemanX509
     end
 
     def not_before
-      Time.parse(certificate.not_before) unless certificate.nil?
+      certificate.not_before unless certificate.nil?
     end
 
     def not_after
-      Time.parse(certificate.not_after) unless certificate.nil?
+      certificate.not_after unless certificate.nil?
     end
 
     def requested_extensions
