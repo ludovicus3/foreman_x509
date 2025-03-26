@@ -19,7 +19,7 @@ Foreman::Plugin.register :foreman_x509 do
   menu :top_menu, :issuers,
     caption: N_('Issuers'),
     engine: ForemanX509::Engine,
-    parent: :infrastructure_menu,
+    parent: :infrastructure_menu
   menu :top_menu, :certificates,
     caption: N_('Certificates'),
     engine: ForemanX509::Engine,
