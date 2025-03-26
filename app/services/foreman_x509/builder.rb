@@ -1,5 +1,10 @@
 module ForemanX509
   class Builder
+    def self.build_generation(subject)
+      builder = new(subject)
+      subject.build_generation(certificate: builder.certificate, request: builder.request, key: builder.key)
+    end
+
     def self.create_generation(subject)
       builder = new(subject)
       subject.create_generation(certificate: builder.certificate, request: builder.request, key: builder.key)
