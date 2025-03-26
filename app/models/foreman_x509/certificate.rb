@@ -23,7 +23,6 @@ module ForemanX509
     before_save :ensure_active_generation, if: -> { generations.empty? }
 
     scoped_search on: :name, complete_value: true
-    scoped_search relation: :issuer, on: :name, complete_value: true, rename: :issuer
 
     def can_self_sign?
       return false if configuration.nil?
