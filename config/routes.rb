@@ -1,4 +1,6 @@
 ForemanX509::Engine.routes.draw do
+  resources :issuers, only: [:index, :new, :create, :show, :destroy ]
+
   resources :certificates, except: [:edit] do
     resources :generations, only: [:index, :create, :show, :destroy] do
       member do
