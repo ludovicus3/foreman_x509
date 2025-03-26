@@ -6,13 +6,13 @@ Foreman::Plugin.register :foreman_x509 do
 
   # Add permissions
   security_block :foreman_x509 do
-    permission :view_foreman_x509_certificates, { :certificates => [:index, :show, :certificate, :key] }
-    permission :create_foreman_x509_certificates, { :certificates => [:new, :create] }
-    permission :destroy_foreman_x509_certificates, { :certificates => [:destroy] }
+  #  permission :view_foreman_x509_certificates, { :certificates => [:index, :show, :certificate, :key] }
+  #  permission :create_foreman_x509_certificates, { :certificates => [:new, :create] }
+  #  permission :destroy_foreman_x509_certificates, { :certificates => [:destroy] }
   end
 
   # Add a new role called 'Discovery' if it doesn't exist
-  role 'ForemanX509', [:view_foreman_x509]
+  #role 'ForemanX509', [:view_foreman_x509]
 
   # add menu entry
   #sub_menu :top_menu, :plugin_template, icon: 'pficon pficon-enterprise', caption: N_('Plugin Template'), after: :hosts_menu do
