@@ -3,7 +3,7 @@ module ForemanX509
     before_action :upload_certificate_file, only: [:create, :update]
     before_action :upload_key_file, only: [:create, :update]
     before_action :upload_configuration_file, only: [:create, :update]
-    before_action :find_resource, except: :index
+    before_action :find_resource, except: [:index, :new, :create]
 
     def index
       @certificates = resource_base
@@ -16,7 +16,6 @@ module ForemanX509
     def create
       @certificate = Certificate.new(certificate_params)
       if @certificate.save
-
         process_success object: @certificate
       else
         process_error object: @certificate
@@ -36,6 +35,10 @@ module ForemanX509
   
     def certificate
       send_data @certificate.certificate.to_pem, filename: "#{@certificate.name}_cert.pem"
+    end
+
+    def request
+      send_data @certificate.request.to_pem, filename: "#{@certificate.name}_req.pem"
     end
   
     def key

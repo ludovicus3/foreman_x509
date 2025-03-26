@@ -34,7 +34,7 @@ module ForemanX509
 
     def issuer_params_for_create
       params.require(:issuer).permit(:certificate_id, :serial, :crl_number, :certificate_revocation_list,
-                                     certificate_attributes: [:name, :issuer_id, :description, :configuration])
+                                     certificate_attributes: [:name, :issuer_id, :description, :configuration, generation_attributes: [:certicate, :key]])
     end
 
   end

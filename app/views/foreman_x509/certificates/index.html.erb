@@ -1,0 +1,32 @@
+<% title _("Certificates") %>
+
+<table class="<%= table_css_classes 'table-condensed table-fixed' %>">
+  <thead>
+    <tr>
+      <th class="col-md-2"><%= sort :name, as: _('Name') %></th>
+      <th class="col-md-3"><%= sort :issuer, as: _('Issuer') %></th>
+      <th class="col-md-1"><%= _('Not Before') %></th>
+      <th class="col-md-1"><%= _('Not After') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @certificates.each do |certificate| %>
+      <tr>
+        <td>
+          <%= link_to certificate.name, certificate_path(certificate) %>
+        </td>
+        <td>
+          <%= link_to certificate.issuer.name, issuer_path(certificate.issuer) %>
+        </td>
+        <td>
+          <%= certificate.not_before %>
+        </td>
+        <td>
+          <%= certificate.not_after %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate_with_info @certificates %>

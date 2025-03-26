@@ -14,13 +14,16 @@ module ForemanX509
     
     serialize :configuration, ForemanX509::Serializer::Configuration
 
-    delegate :certificate, :key, to: :generation, allow_nil: true
+    delegate :certificate, :request, :key, to: :generation, allow_nil: true
 
     validates :name, format: { with: /\A[a-z][a-z0-9.-]*(?<!-)\z/, message: _("Invalid name format!") }
     validates :certificate, presence: true, if: -> { configuration.nil? }
     validate :configuration_has_required_fields, unless: -> { configuration.nil? }
 
     before_save :ensure_active_generation, if: -> { generations.empty? }
+
+    scoped_search on: :name, complete_value: true
+    scoped_search relation: :issuer, on: :name, complete_value: true, rename: :issuer
 
     def can_self_sign?
       return false if configuration.nil?
@@ -29,26 +32,18 @@ module ForemanX509
       configuration[section].present?
     end
 
-    def authoritative?
-      return false if certificate.nil?
-
-      basic = certificate.extensions.find { |ext| ext.oid == 'basicConstraints' }
-
-      basic.nil? ? false : basic.value.upcase == 'CA:TRUE'
-    end
-
     def active?
       return false if certificate.nil?
 
-      (certificate.not_before..certificate.not_after).include? Time.now
+      (not_before..not_after).include? Time.now
     end
 
-    def can_sign?
-      authoritative? and active? and key.exists?
+    def not_before
+      Time.parse(certicate.not_before) unless certicate.nil?
     end
 
-    def externally_signed?
-      certificate.exists? and issuer.nil?
+    def not_after
+      Time.parse(certicate.not_after) unless certicate.nil?
     end
 
     def requested_extensions

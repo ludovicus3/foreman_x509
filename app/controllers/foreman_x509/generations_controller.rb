@@ -18,14 +18,28 @@ module ForemanX509
     def show
     end
 
+    def update
+      if @generation.update(generation_params)
+        process_success object: @generation
+      else
+        process_error object: @generation
+      end
+    end
+
     def activate
       @generation.activate!
     end
 
     def certificate
+      send_data @generation.certificate.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_cert.pem"
+    end
+
+    def request
+      send_data @generation.request.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_req.pem"
     end
 
     def key
+      send_data @generation.key.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_key.pem"
     end
 
     def destroy
