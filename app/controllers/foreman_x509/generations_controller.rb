@@ -34,7 +34,7 @@ module ForemanX509
       send_data @generation.certificate.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_cert.pem"
     end
 
-    def request
+    def signing_request
       send_data @generation.request.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_req.pem"
     end
 

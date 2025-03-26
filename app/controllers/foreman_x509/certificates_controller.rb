@@ -37,7 +37,7 @@ module ForemanX509
       send_data @certificate.certificate.to_pem, filename: "#{@certificate.name}_cert.pem"
     end
 
-    def request
+    def signing_request
       send_data @certificate.request.to_pem, filename: "#{@certificate.name}_req.pem"
     end
   

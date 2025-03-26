@@ -4,13 +4,14 @@ ForemanX509::Engine.routes.draw do
       member do
         put :activate
         get :certificate
-        get :request
+        get :signing_request
         get :key
       end
     end
 
     member do
       get :certificate
+      get :signing_request
       get :key
     end
   end
