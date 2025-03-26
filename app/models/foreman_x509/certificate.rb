@@ -22,6 +22,13 @@ module ForemanX509
 
     before_save :ensure_active_generation, if: -> { generations.empty? }
 
+    def can_self_sign?
+      return false if configuration.nil?
+
+      section = configuration.get_value('req', 'x509_extensions')
+      configuration[section].present?
+    end
+
     def authoritative?
       return false if certificate.nil?
 
@@ -61,6 +68,5 @@ module ForemanX509
     def ensure_active_generation
       return if configuration.nil?
     end
-
   end
 end

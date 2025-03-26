@@ -12,12 +12,16 @@ module ForemanX509
     serialize :serial, ForemanX509::Serializer::BigNumber
     serialize :certificate_revocation_list, ForemanX509::Serializer::CertificateRevocationList
 
-    delegate :name, :description, :description=, :configuration, :configuration=, to: :certificate
+    delegate :name, :description, :configuration, to: :certificate
 
     validate :validate_authority_section, unless: -> { configuration.blank? }
 
     def external?
-      certificate.key.nil?
+      configuration.nil?
+    end
+
+    def self_signing?
+      certificate.issuer == self
     end
 
     def serial!

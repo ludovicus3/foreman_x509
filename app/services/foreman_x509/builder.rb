@@ -1,49 +1,41 @@
 module ForemanX509
   class Builder
-    attr_reader :subject, :issuer, :certificate, :request
+    def self.create_generation(subject)
+      builder = new(subject)
+      subject.create_generation(certificate: builder.certificate, request: builder.request, key: builder.key)
+    end
+
+    attr_reader :subject, :issuer, :certificate, :request, :key
 
     def initialize(subject)
       @subject = subject
       @issuer = subject.issuer
-      if @issuer.nil?
-        section = subject.configuration.get_value('req', 'x509_extensions')
-        unless subject.configuration[section].empty?
-          @issuer = Issuer.new(certificate: subject)
-        end
-      end
+      @issuer ||= Issuer.new(certificate: subject) if subject.can_self_sign?
+      @issuer ||= Issuer.new(certificate: Certificate.new)
 
-      build_request
+      @key = (subject.key || OpenSSL::PKey::RSA.new(key_bits))
+      
+      @certificate = OpenSSL::X509::Certificate.new unless external?
+      @request = OpenSSL::X509::Request.new if external?
+
       build_certificate
-    end
-
-    def key
-      @key ||= subject.key || OpenSSL::PKey::RSA.new(key_bits)
+      build_request
     end
 
     private
 
-    def initialize_certificate
-      @certificate = OpenSSL::X509::Certificate.new
-    end
-
-    def initialize_request
-      @request = OpenSSL::X509::Request.new
-    end
-
     def build_certificate
       return if issuer.external?
-      
-      initialize_certificate
 
+      certificate.subject = subject.subject
       certificate.public_key = key.public_key
       certificate.version = 2
+
+      certificate.issuer = issuer.subject
       certificate.serial = issuer.serial!
       certificate.not_before = issuer.start_date
       certificate.not_after = issuer.end_date
-
-      certificate.subject = subject.subject
-      certificate.issuer = issuer.subject
-
+      
       certificate_extensions do |extension|
         certificate.add_extension extension
       end
@@ -54,8 +46,6 @@ module ForemanX509
     def build_request
       return unless issuer.external?
 
-      initialize_request
-
       request.public_key = key.public_key
       request.version = 0
       request.subject = subject.subject
@@ -63,7 +53,6 @@ module ForemanX509
       request.add_attribute OpenSSL::X509::Attribute.new('extReq', OpenSSL::ASN1::Set([OpenSSL::ASN1::Sequence(request_extensions)]))
 
       request.sign(key, subject.digest)
-      request
     end
 
     def request_extensions
@@ -88,13 +77,12 @@ module ForemanX509
     end
 
     def signing_certificate
-      return nil if issuer.nil? # externally signed
-      return certificate if issuer.certificate == subject
+      return certificate if issuer.self_signing?
       issuer.certificate.certificate
     end
 
     def signing_key
-      return key if issuer.certificate == subject
+      return key if issuer.self_signing?
       issuer.certificate.key
     end
   end
