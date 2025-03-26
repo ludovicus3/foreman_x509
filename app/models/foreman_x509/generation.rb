@@ -4,6 +4,7 @@ module ForemanX509
     has_one :issuer, through: :owner, class_name: 'ForemanX509::Issuer'
     
     serialize :certificate, ForemanX509::Serializer::Certificate
+    serialize :request, ForemanX509::Serializer::Request
     serialize :key, ForemanX509::Serializer::Key
 
     before_save :deactivate_previous_generation, if: :active?

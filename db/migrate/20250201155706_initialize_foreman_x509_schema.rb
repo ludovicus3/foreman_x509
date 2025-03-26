@@ -15,6 +15,7 @@ class InitializeForemanX509Schema < ActiveRecord::Migration[6.0]
       t.bigint  :owner_id, null: false
       t.boolean :active, null: false, default: false
       t.text    :certificate
+      t.text    :request
       t.text    :key
 
       t.timestamps
