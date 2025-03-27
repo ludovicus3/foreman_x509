@@ -49,5 +49,9 @@ module ForemanX509
         process_error object: @generation
       end
     end
+
+    def resource_class
+      ForemanX509::Generation
+    end
   end
 end

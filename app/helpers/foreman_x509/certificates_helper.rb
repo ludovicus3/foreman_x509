@@ -29,11 +29,11 @@ module ForemanX509
     def generation_actions(generation)
       buttons = []
 
-      buttons << link_to(_('Activate'), activate_generation_path(id: generation.id), method: :put) if generation.status == 'inactive'
-      buttons << link_to(_('Download Certificate'), certificate_generation_path(id: generation.id)) unless generation.certificate.nil?
-      buttons << link_to(_('Download Request'), signing_request_generation_path(id: generation.id)) unless generation.request.nil?
-      buttons << link_to(_('Download Key'), key_generation_path(id: generation.id)) unless generation.key.nil?
-      buttons << link_to(_('Delete'), generation_path(id: generation.id), method: :delete, data: { confirm: _("Are you sure?") }) unless generation.active?
+      buttons << link_to(_('Activate'), activate_generation_path(generation), method: :put) if generation.status == 'inactive'
+      buttons << link_to(_('Download Certificate'), certificate_generation_path(generation)) unless generation.certificate.nil?
+      buttons << link_to(_('Download Request'), signing_request_generation_path(generation)) unless generation.request.nil?
+      buttons << link_to(_('Download Key'), key_generation_path(generation)) unless generation.key.nil?
+      buttons << link_to(_('Delete'), generation_path(generation), method: :delete, data: { confirm: _("Are you sure?") }) unless generation.active?
 
       action_buttons(buttons)
     end
