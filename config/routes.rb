@@ -13,16 +13,16 @@ ForemanX509::Engine.routes.draw do
     resources :issuers, only: [:index, :new, :create, :show, :destroy ]
 
     resources :certificates do
-      resources :generations, only: [:new, :create, :show, :edit, :update, :destroy] do
-        member do
-          put :activate
-          get :certificate
-          get :signing_request
-          get :key
-        end
-      end
-
       member do
+        get :certificate
+        get :signing_request
+        get :key
+      end
+    end
+
+    resources :generations, only: [:new, :create, :show, :edit, :update, :destroy] do
+      member do
+        put :activate
         get :certificate
         get :signing_request
         get :key
