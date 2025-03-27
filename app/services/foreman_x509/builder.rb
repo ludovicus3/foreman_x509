@@ -29,6 +29,10 @@ module ForemanX509
 
     private
 
+    def self_signing?
+      issuer.certificate == subject
+    end
+
     def build_certificate
       return if issuer.external?
 
@@ -82,12 +86,12 @@ module ForemanX509
     end
 
     def signing_certificate
-      return certificate if issuer.self_signing?
+      return certificate if self_signing?
       issuer.certificate.certificate
     end
 
     def signing_key
-      return key if issuer.self_signing?
+      return key if self_signing?
       issuer.certificate.key
     end
   end
