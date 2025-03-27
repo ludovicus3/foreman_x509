@@ -1,5 +1,5 @@
 module ForemanX509
-  module DownloadHelpers
+  module DownloadsHelper
     def certificate_download_links
       links = []
 
