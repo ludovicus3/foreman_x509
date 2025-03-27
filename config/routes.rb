@@ -1,4 +1,14 @@
 ForemanX509::Engine.routes.draw do
+  scope :foreman_patch, path: '/foreman_patch' do
+    namespace :api do
+      scope '(:apiv)', module: :v2, defaults: { apiv: 'v2' }, apiv: /v1|v2/, constraints: ApiConstraints.new(version: 2, default: true) do
+
+        resources :certificates, only: [:index, :create, :show, :update, :destroy] do
+        end
+      end
+    end
+  end
+
   resources :issuers, only: [:index, :new, :create, :show, :destroy ]
 
   resources :certificates, except: [:edit] do
