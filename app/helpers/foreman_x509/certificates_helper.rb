@@ -25,5 +25,11 @@ module ForemanX509
 
       links
     end
+
+    def generation_actions(generation)
+      buttons = []
+
+      action_buttons(buttons)
+    end
   end
 end

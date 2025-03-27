@@ -5,8 +5,6 @@ module ForemanX509
     before_action :upload_configuration_file, only: [:create, :update]
     before_action :find_resource, except: [:index, :new, :create]
 
-    helper ForemanX509::GenerationsHelper
-
     def index
       @certificates = resource_base_search_and_page
     end
