@@ -4,7 +4,7 @@
   <%= textarea_f f, :description %>
   <%= selectable_f f, :issuer_id, ForemanX509::Issuer.all.collect { |c| [c.name, c.id] }, { include_blank: true }, { label: _('Issuer'), required: false } %>
   <%= textarea_f f, :configuration %>
-  <%= file_file_f f, :configuration %>
+  <%= file_field_f f, :configuration %>
 
   <%= submit_or_cancel f, false, { cancel_path: (@certificate.new_record? ? plans_path : plan_path(@certificate)) } %>
 <% end %>
