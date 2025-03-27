@@ -20,8 +20,8 @@ module ForemanX509
 
       @key = (subject.key || OpenSSL::PKey::RSA.new(key_bits))
       
-      @certificate = OpenSSL::X509::Certificate.new unless external?
-      @request = OpenSSL::X509::Request.new if external?
+      @certificate = OpenSSL::X509::Certificate.new unless issuer.external?
+      @request = OpenSSL::X509::Request.new if issuer.external?
 
       build_certificate
       build_request
