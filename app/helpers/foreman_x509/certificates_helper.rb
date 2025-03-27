@@ -1,5 +1,13 @@
 module ForemanX509
-  module DownloadsHelper
+  module CertificatesHelper
+    def certificate_details
+      if @certificate.certificate.present?
+        @certificate.certificate.to_text
+      else
+        @certificate.request.to_pem
+      end
+    end
+
     def certificate_download_links
       links = []
 
