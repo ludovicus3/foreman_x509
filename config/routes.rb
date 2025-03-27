@@ -9,22 +9,24 @@ ForemanX509::Engine.routes.draw do
     end
   end
 
-  resources :issuers, only: [:index, :new, :create, :show, :destroy ]
+  constraints(id: /[^\/]+/) do
+    resources :issuers, only: [:index, :new, :create, :show, :destroy ]
 
-  resources :certificates, except: [:edit] do
-    resources :generations, only: [:index, :create, :show, :destroy] do
+    resources :certificates, except: [:edit] do
+      resources :generations, only: [:index, :create, :show, :destroy],  do
+        member do
+          put :activate
+          get :certificate
+          get :signing_request
+          get :key
+        end
+      end
+
       member do
-        put :activate
         get :certificate
         get :signing_request
         get :key
       end
-    end
-
-    member do
-      get :certificate
-      get :signing_request
-      get :key
     end
   end
 end
