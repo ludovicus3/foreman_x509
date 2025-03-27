@@ -1,0 +1,15 @@
+<% title @certificate.name %>
+
+<%
+items = [{ caption: _('Certificates'), url: cycles_path },
+         { caption: @certificate.name }]
+
+breadcrumbs(resource_url: api_certificates_path, 
+            name_field: 'name',
+            switcher_item_url: certificate_path(':id'),
+            items: items)
+%>
+
+<pre>
+<%= @certificate.certificate.to_text %>
+</pre>
