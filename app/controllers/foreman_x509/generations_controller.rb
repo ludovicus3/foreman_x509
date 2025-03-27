@@ -1,10 +1,10 @@
 module ForemanX509
   class GenerationsController < ::ApplicationController
 
-    before_action :find_resource, except: :index
+    before_action :find_resource, except: [:new, :create]
 
-    def index
-      @generations = resource_scope(owner_id: params[:certificate_id])
+    def new
+      @generation = @certificate.generations.build
     end
 
     def create

@@ -1,0 +1,32 @@
+<table class="<%= table_css_classes 'table-condensed table-fixed' %>">
+  <thead>
+    <tr>
+      <th class="col-md-1"><%= _('Id') %></th>
+      <th class="col-md-2"><%= _('Not Before') %></th>
+      <th class="col-md-2"><%= _('Not After') %></th>
+      <th class="col-md-1"><%= _('Status') %></th>
+      <th class="col-md-1"><%= _('Actions') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @generations.each do |generation| %>
+      <tr>
+        <td>
+          <%= link_to generation.id, certificate_generation_path(generation) %>
+        </td>
+        <td>
+          <%= generation.not_before.httpdate unless generation.not_before.nil? %>
+        </td>
+        <td>
+          <%= generation.not_after.httpdate unless generation.not_after.nil? %>
+        </td>
+        <td>
+          <%= generation.status %>
+        </td>
+        <td>
+          <%= generation_actions(generation) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

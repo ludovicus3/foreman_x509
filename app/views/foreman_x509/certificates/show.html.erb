@@ -26,5 +26,6 @@ breadcrumbs(resource_url: api_certificates_path,
     <pre><%= @certificate.configuration.to_s %></pre>
   </div>
   <div class="tab-pane" id="generations">
+    <%= render partial: "foreman_x509/generations/index" %>
   </div>
 </div>

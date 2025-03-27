@@ -7,13 +7,32 @@ module ForemanX509
     serialize :request, ForemanX509::Serializer::Request
     serialize :key, ForemanX509::Serializer::Key
 
+    delegate :not_before, :not_after, to: :certificate, allow_nil: true
+
     before_save :deactivate_previous_generation, if: :active?
 
+    validates :active, presence: true, if: :active?
     validates :active, uniqueness: { scope: :owner_id }, if: :active?
     validate :validate_certificate_key_pairing, unless: -> { certificate.blank? or key.blank? }
 
+    def status
+      return 'active' if active?
+
+      return 'pending' if certificate.nil?
+
+      return 'expired' if expired?
+
+      'inactive'
+    end
+
     def activate!
       update!(active: true)
+    end
+
+    def expired?
+      return false if certificate.nil?
+      
+      not (certificate.not_before..certificate.not_after).include? Time.now
     end
 
     private
