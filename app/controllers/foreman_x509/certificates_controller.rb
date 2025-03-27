@@ -67,12 +67,12 @@ module ForemanX509
     end
   
     def upload_certificate_file
-      return if (certificate = params.dig(:certificate, :generation_attributes, :certificate)).nil?
+      return if (certificate = params.dig(:certificate, :generation_attributes, :certificate_file)).nil?
       params[:certificate][:generation_attributes][:certificate] = certificate.read if certificate.respond_to?(:read)
     end
   
     def upload_key_file
-      return if (key = params.dig(:certificate, :generation_attributes, :key)).nil?
+      return if (key = params.dig(:certificate, :generation_attributes, :key_file)).nil?
       params[:certificate][:generation_attributes][:key] = key.read if key.respond_to?(:read)
     end
 
