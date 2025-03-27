@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @generations.each do |generation| %>
+    <% @certificate.generations.each do |generation| %>
       <tr>
         <td>
           <%= link_to generation.id, certificate_generation_path(generation) %>
