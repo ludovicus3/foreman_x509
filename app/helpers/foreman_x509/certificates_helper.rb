@@ -29,11 +29,11 @@ module ForemanX509
     def generation_actions(generation)
       buttons = []
 
-      buttons << display_link_if_authorized(hash_for_activate_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) if generation.status == 'inactive'
-      buttons << display_link_if_authorized(hash_for_certificate_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) unless generation.certificate.nil?
-      buttons << display_link_if_authorized(hash_for_signing_request_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) unless generation.request.nil?
-      buttons << display_link_if_authorized(hash_for_key_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) unless generation.key.nil?
-      buttons << display_delete_if_authorized(hash_for_generation_path(id: generation.id).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer), data: { confirm: _("Delete certificate generation, %s?") % generation.id }) unless generation.active?
+      buttons << link_to(hash_for_activate_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) if generation.status == 'inactive'
+      buttons << link_to(hash_for_certificate_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) unless generation.certificate.nil?
+      buttons << link_to(hash_for_signing_request_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) unless generation.request.nil?
+      buttons << link_to(hash_for_key_generation_path(id: generation.id)).merge(engine: foreman_x509, auth_object: generation, authorizer: authorizer) unless generation.key.nil?
+      buttons << link_to(hash_for_generation_path(id: generation.id).merge(method: :delete, engine: foreman_x509, auth_object: generation, authorizer: authorizer), data: { confirm: _("Delete certificate generation, %s?") % generation.id }) unless generation.active?
 
       action_buttons(buttons)
     end
