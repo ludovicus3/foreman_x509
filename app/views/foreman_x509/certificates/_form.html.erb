@@ -6,5 +6,5 @@
   <%= textarea_f f, :configuration %>
   <%= file_field_f f, :configuration %>
 
-  <%= submit_or_cancel f, false, { cancel_path: (@certificate.new_record? ? plans_path : plan_path(@certificate)) } %>
+  <%= submit_or_cancel f, false, { cancel_path: (@certificate.new_record? ? certificates_path : certificate_path(@certificate)) } %>
 <% end %>
