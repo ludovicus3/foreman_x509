@@ -3,8 +3,10 @@
   <%= text_f f, :name %>
   <%= textarea_f f, :description %>
   <%= selectable_f f, :issuer_id, ForemanX509::Issuer.all.collect { |c| [c.name, c.id] }, { include_blank: true }, { label: _('Issuer'), required: false } %>
-  <%= textarea_f f, :configuration %>
-  <%= file_field_f f, :configuration %>
+  <%= field(f, :configuration) do %>
+    <%= f.text_area :configuration, rows: 10, class: "form-control" %>
+    <%= f.file_field :configuration_file %>
+  <% end %>
 
   <%= submit_or_cancel f, false, { cancel_path: (@certificate.new_record? ? certificates_path : certificate_path(@certificate)) } %>
 <% end %>

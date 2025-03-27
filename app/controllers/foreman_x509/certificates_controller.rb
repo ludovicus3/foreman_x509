@@ -60,7 +60,7 @@ module ForemanX509
     private
 
     def upload_configuration_file
-      return if (configuration = params.dig(:certificate, :configuration)).nil?
+      return if (configuration = params.dig(:certificate, :configuration_file)).nil?
       params[:certificate][:configuration] = configuration.read if configuration.respond_to?(:read)
     end
   
