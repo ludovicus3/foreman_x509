@@ -78,7 +78,8 @@ module ForemanX509
     end
 
     def key_bits
-      subject.configuration.get_value('req', 'default_bits').to_i || 4096
+      return 4096 unless subject.configuration.get_value('req', 'default_bits').nil?
+      subject.configuration.get_value('req', 'default_bits').to_i
     end
 
     def extension_factory
