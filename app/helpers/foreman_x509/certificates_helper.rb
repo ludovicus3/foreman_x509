@@ -20,7 +20,7 @@ module ForemanX509
                        class: 'btn btn-default',
                        title: _('Download the PEM format certificate')) unless @certificate.certificate.nil?
 
-      links << link_to(_('Download Request'), signing_request_certificate_path(@certificate),
+      links << link_to(_('Download Request'), request_certificate_path(@certificate),
                        class: 'btn btn-default',
                        title: _('Download the PEM format certificate signing request')) unless @certificate.request.nil?
 
