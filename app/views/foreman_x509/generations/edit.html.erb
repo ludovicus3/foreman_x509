@@ -1,5 +1,5 @@
 <pre><%= @generation.request.to_pem %></pre>
-<%= form_for @generation, url: certificate_generation_path(@certificate, @generation) do |f| %>
+<%= form_for @generation, url: certificate_generation_path(certificate_id: @certificate, id: @generation) do |f| %>
   <%= field(f, :certificate) do %>
     <%= f.text_area :certificate, rows: 10, class: "form-control" %>
     <%= f.file_field :certificate_file %>
