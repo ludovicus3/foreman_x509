@@ -78,7 +78,7 @@ module ForemanX509
     end
 
     def key_bits
-      return 4096 unless subject.configuration.get_value('req', 'default_bits').nil?
+      return 4096 if subject.configuration.get_value('req', 'default_bits').nil?
       subject.configuration.get_value('req', 'default_bits').to_i
     end
 
