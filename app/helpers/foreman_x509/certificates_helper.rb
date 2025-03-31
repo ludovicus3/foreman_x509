@@ -8,6 +8,11 @@ module ForemanX509
       end
     end
 
+    def issuer_link(certificate)
+      return if certificate.issuer.nil?
+      link_to certificate.issuer.name, issuer_path(certificate.issuer)
+    end
+
     def certificate_download_links
       links = []
 

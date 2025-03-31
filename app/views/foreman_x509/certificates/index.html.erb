@@ -18,7 +18,7 @@
           <%= link_to certificate.name, certificate_path(certificate) %>
         </td>
         <td>
-          <%= link_to certificate.issuer.name, issuer_path(certificate.issuer) %>
+          <%= issuer_link certificate %>
         </td>
         <td>
           <%= certificate.not_before.httpdate unless certificate.not_before.nil? %>
