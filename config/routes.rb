@@ -28,14 +28,6 @@ ForemanX509::Engine.routes.draw do
     resources :issuers, only: [:index, :new, :create, :show, :destroy ]
 
     resources :certificates do
-      member do
-        get :certificate
-        get 'request', to: 'certificate#signing_request'
-        get :key
-      end
-    end
-
-    resources :certificates, as: :owner, only: [] do
       resources :generations, only: [:new, :create, :edit, :update, :destroy] do
         member do
           post :activate
@@ -43,6 +35,12 @@ ForemanX509::Engine.routes.draw do
           get  'request', to: 'generations#signing_request'
           get  :key
         end
+      end
+
+      member do
+        get :certificate
+        get 'request', to: 'certificate#signing_request'
+        get :key
       end
     end
   end

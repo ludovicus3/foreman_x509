@@ -5,11 +5,11 @@ module ForemanX509
     before_action :upload_certificate_file, only: [:create, :update]
 
     def new
-      @generation = ForemanX509::Certificate.find(params[:owner_id]).generations.build
+      @generation = ForemanX509::Certificate.find(params[:certificate_id]).generations.build
     end
 
     def create
-      if ForemanX509::Certificate.find(params[:owner_id]).generations.create(generation_params)
+      if ForemanX509::Certificate.find(params[:certificate_id]).generations.create(generation_params)
         process_success object: @generation
       else
         process_error object: @generation
@@ -54,7 +54,7 @@ module ForemanX509
     private
 
     def find_certificate
-      @certificate ||= ForemanX509::Certificate.friendly.find(params[:owner_id])
+      @certificate ||= ForemanX509::Certificate.friendly.find(params[:certificate_id])
     end
 
     def find_generation
