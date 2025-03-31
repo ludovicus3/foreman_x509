@@ -62,7 +62,7 @@ module ForemanX509
     private
 
     def find_generation
-      ForemanX509::Certificate.find(params[:owner_id]).generations.where(id: params[:id])
+      @generation ||= ForemanX509::Certificate.find(params[:owner_id]).generations.where(id: params[:id])
     end
 
     def upload_certificate_file
