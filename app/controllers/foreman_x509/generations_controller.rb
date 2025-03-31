@@ -1,16 +1,15 @@
 module ForemanX509
   class GenerationsController < ::ApplicationController
 
-    before_action :find_certificate
-    before_action :find_resource, except: [:new, :create]
+    before_action :find_generation, except: [:new, :create]
     before_action :upload_certificate_file, only: [:create, :update]
 
     def new
-      @generation = @certificate.generations.build
+      @generation = ForemanX509::Certificate.find(params[:owner_id]).generations.build
     end
 
     def create
-      if @certificate.generations.create(generation_params)
+      if ForemanX509::Certificate.find(params[:owner_id]).generations.create(generation_params)
         process_success object: @generation
       else
         process_error object: @generation
@@ -62,8 +61,8 @@ module ForemanX509
 
     private
 
-    def find_certificate
-      @certificate ||= Certificate.find(params[:owner_id])
+    def find_generation
+      ForemanX509::Certificate.find(params[:owner_id]).generations.where(id: params[:id])
     end
 
     def upload_certificate_file
