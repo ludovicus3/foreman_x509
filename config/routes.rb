@@ -4,7 +4,7 @@ ForemanX509::Engine.routes.draw do
       scope '(:apiv)', module: :v2, defaults: { apiv: 'v2' }, apiv: /v1|v2/, constraints: ApiConstraints.new(version: 2, default: true) do
 
         resources :issuers, only: [:index, :create, :show, :update, :destroy]
-        
+
         resources :certificates, only: [:index, :create, :show, :update, :destroy] do
           resources :generations, only: [:index, :create, :destroy] do
             member do

@@ -16,11 +16,11 @@ module ForemanX509
     validate :validate_certificate_key_pairing, unless: -> { certificate.blank? or key.blank? }
 
     def status
-      return 'active' if active?
-
       return 'pending' if certificate.nil?
 
       return 'expired' if expired?
+
+      return 'active' if active?
 
       'inactive'
     end

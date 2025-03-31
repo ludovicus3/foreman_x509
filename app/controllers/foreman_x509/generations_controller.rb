@@ -1,6 +1,7 @@
 module ForemanX509
   class GenerationsController < ::ApplicationController
 
+    before_action :find_certificate
     before_action :find_resource, except: [:new, :create]
 
     def new
@@ -8,7 +9,7 @@ module ForemanX509
     end
 
     def create
-      if @generation.create(generation_params)
+      if @certificate.generations.create(generation_params)
         process_success object: @generation
       else
         process_error object: @generation
@@ -16,14 +17,6 @@ module ForemanX509
     end
 
     def show
-    end
-
-    def update
-      if @generation.update(generation_params)
-        process_success object: @generation
-      else
-        process_error object: @generation
-      end
     end
 
     def activate
@@ -52,6 +45,12 @@ module ForemanX509
 
     def resource_class
       ForemanX509::Generation
+    end
+
+    private
+
+    def find_certificate
+      @certificate = Certificate.find(params[:certificate_id])
     end
   end
 end

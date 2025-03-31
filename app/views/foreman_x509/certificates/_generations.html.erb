@@ -12,7 +12,7 @@
     <% @certificate.generations.each do |generation| %>
       <tr>
         <td>
-          <%= link_to generation.id, certificate_generation_path(generation) %>
+          <%= generation.id %>
         </td>
         <td>
           <%= generation.not_before.httpdate unless generation.not_before.nil? %>
