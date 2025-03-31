@@ -56,6 +56,10 @@ module ForemanX509
       ForemanX509::Generation
     end
 
+    def resource_scope
+      find_certificate.generations
+    end
+
     private
 
     def find_certificate
