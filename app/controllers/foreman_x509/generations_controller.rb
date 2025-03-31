@@ -3,6 +3,7 @@ module ForemanX509
 
     before_action :find_certificate
     before_action :find_resource, except: [:new, :create]
+    before_action :upload_certificate_file, only: [:create, :update]
 
     def new
       @generation = @certificate.generations.build
@@ -16,7 +17,15 @@ module ForemanX509
       end
     end
 
-    def show
+    def edit
+    end
+
+    def update
+      if @generation.update(generation_params)
+        process_success object: @generation
+      else
+        process_error object: @generation
+      end
     end
 
     def activate
@@ -51,6 +60,16 @@ module ForemanX509
 
     def find_certificate
       @certificate = Certificate.find(params[:certificate_id])
+    end
+
+    def upload_certificate_file
+      return if (certificate = params.dig(:generation, :generation)).nil?
+      params[:generation][:certificate] = certificate.read if certificate.respond_to?(:read)
+    end
+
+    def generation_params
+      return params.require(:generation).permit(:certificate) if params[:action] == :update
+      return params.require(:generation).permit(:certificate, :request, :key) == :new
     end
   end
 end

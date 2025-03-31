@@ -30,7 +30,7 @@ ForemanX509::Engine.routes.draw do
     resources :issuers, only: [:index, :new, :create, :show, :destroy ]
 
     resources :certificates do
-      resources :generations, only: [:new, :create, :edit, :destroy] do
+      resources :generations, only: [:new, :create, :edit, :update, :destroy] do
         member do
           post :activate
           get  :certificate
