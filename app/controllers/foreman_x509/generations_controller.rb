@@ -59,11 +59,11 @@ module ForemanX509
     private
 
     def find_certificate
-      @certificate = Certificate.find(params[:certificate_id])
+      @certificate ||= Certificate.find(params[:owner_id])
     end
 
     def upload_certificate_file
-      return if (certificate = params.dig(:generation, :generation)).nil?
+      return if (certificate = params.dig(:generation, :certificate_file)).nil?
       params[:generation][:certificate] = certificate.read if certificate.respond_to?(:read)
     end
 
