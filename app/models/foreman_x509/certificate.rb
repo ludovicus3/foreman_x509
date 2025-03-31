@@ -20,7 +20,7 @@ module ForemanX509
     validates :certificate, presence: true, if: -> { configuration.nil? }
     validate :configuration_has_required_fields, unless: -> { configuration.nil? }
 
-    before_save :ensure_active_generation, if: -> { generations.empty? }
+    after_save :ensure_active_generation, if: -> { generations.empty? }
 
     scoped_search on: :name, complete_value: true
 
@@ -60,7 +60,9 @@ module ForemanX509
     end
 
     def ensure_active_generation
-      return if configuration.nil?
+      return if configuration.blank?
+
+      ForemanX509::Builder.create(self)
     end
   end
 end
