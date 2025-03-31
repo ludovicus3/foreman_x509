@@ -51,18 +51,14 @@ module ForemanX509
       end
     end
 
-    def resource_class
-      ForemanX509::Generation
-    end
-
-    def resource_scope
-      find_certificate.generations
-    end
-
     private
 
+    def find_certificate
+      @certificate ||= ForemanX509::Certificate.friendly.find(params[:owner_id])
+    end
+
     def find_generation
-      @generation ||= ForemanX509::Certificate.find(params[:owner_id]).generations.where(id: params[:id])
+      @generation ||= find_certificate.generations.find_by(id: params[:id])
     end
 
     def upload_certificate_file
