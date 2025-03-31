@@ -34,12 +34,14 @@ module ForemanX509
     def generation_actions(generation)
       buttons = []
 
-      buttons << link_to(_('Activate'), activate_certificate_generation_path(generation), method: :put) if generation.status == 'inactive'
-      buttons << link_to(_('Download Certificate'), certificate_certificate_generation_path(generation)) unless generation.status == 'pending'
-      buttons << link_to(_('Upload Certificate'), edit_certificate_generation_path(generation)) if generation.status == 'pending'
-      buttons << link_to(_('Download Request'), request_certificate_generation_path(generation)) if generation.status == 'pending'
-      buttons << link_to(_('Download Key'), key_certificate_generation_path(generation)) unless generation.key.nil?
-      buttons << link_to(_('Delete'), certificate_generation_path(generation), method: :delete, data: { confirm: _("Are you sure?") }) unless generation.active?
+      params = [generation.owner, generation]
+
+      buttons << link_to(_('Activate'), activate_certificate_generation_path(*params), method: :post) if generation.status == 'inactive'
+      buttons << link_to(_('Download Certificate'), certificate_certificate_generation_path(*params)) unless generation.status == 'pending'
+      buttons << link_to(_('Upload Certificate'), edit_certificate_generation_path(*params)) if generation.status == 'pending'
+      buttons << link_to(_('Download Request'), request_certificate_generation_path(*params)) if generation.status == 'pending'
+      buttons << link_to(_('Download Key'), key_certificate_generation_path(*params)) unless generation.key.nil?
+      buttons << link_to(_('Delete'), certificate_generation_path(*params), method: :delete, data: { confirm: _("Are you sure?") }) unless generation.active?
 
       action_buttons(buttons)
     end
