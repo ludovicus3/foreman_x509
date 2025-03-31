@@ -62,7 +62,7 @@ module ForemanX509
     def ensure_active_generation
       return if configuration.blank?
 
-      ForemanX509::Builder.create(self)
+      ForemanX509::Builder.create_generation(self)
     end
   end
 end

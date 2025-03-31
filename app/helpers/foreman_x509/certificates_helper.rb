@@ -4,7 +4,7 @@ module ForemanX509
       if @certificate.certificate.present?
         @certificate.certificate.to_text
       else
-        @certificate.request.to_pem
+        @certificate.subject.to_s(OpenSSL::X509::Name::MULTILINE)
       end
     end
 
