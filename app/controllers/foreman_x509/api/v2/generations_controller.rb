@@ -30,7 +30,7 @@ module ForemanX509
           if request.get?
             send_data @generation.certificate.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_cert.pem"
           else # post?
-            certificate = params[:generation], :certificate)
+            certificate = params[:generation][:certificate]
             params[:generation][:certificate] = certificate.read if certificate.respond_to?(:read)
 
             render :show
