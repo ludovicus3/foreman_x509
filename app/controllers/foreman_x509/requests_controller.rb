@@ -3,7 +3,6 @@ module ForemanX509
     before_action :find_resource
 
     def show
-      send_data @request.to_pem, filename: "#{@request.name}_req.pem"
     end
 
     def resource_class

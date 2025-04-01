@@ -20,9 +20,9 @@ module ForemanX509
                        class: 'btn btn-default',
                        title: _('Download the PEM format certificate')) unless @certificate.certificate.nil?
 
-      links << link_to(_('Download Request'), request_certificate_path(@certificate),
+      links << link_to(_('Sign Request'), request_path(@certificate.request),
                        class: 'btn btn-default',
-                       title: _('Download the PEM format certificate signing request')) unless @certificate.request.nil?
+                       title: _('Upload the signed certificate')) unless @certificate.request.nil?
 
       links << link_to(_('Download Key'), key_certificate_path(@certificate),
                        class: 'btn btn-default',
@@ -38,8 +38,8 @@ module ForemanX509
 
       buttons << link_to(_('Activate'), activate_certificate_generation_path(*params), method: :post) if generation.status == 'inactive'
       buttons << link_to(_('Download Certificate'), certificate_certificate_generation_path(*params)) unless generation.status == 'pending'
-      buttons << link_to(_('Upload Certificate'), edit_certificate_generation_path(*params)) if generation.status == 'pending'
-      buttons << link_to(_('Download Request'), request_certificate_generation_path(*params)) if generation.status == 'pending'
+      buttons << link_to(_('Upload Certificate'), request_path(generation.request)) if generation.status == 'pending'
+      buttons << link_to(_('Download Request'), download_api_request_path(generation.request)) if generation.status == 'pending'
       buttons << link_to(_('Download Key'), key_certificate_generation_path(*params)) unless generation.key.nil?
       buttons << link_to(_('Delete'), certificate_generation_path(*params), method: :delete, data: { confirm: _("Are you sure?") }) unless generation.active?
 

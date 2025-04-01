@@ -34,10 +34,11 @@ ForemanX509::Engine.routes.draw do
     resources :requests, only: [:show]
 
     resources :certificates do
-      resources :generations, only: [:new, :create, :edit, :update, :destroy] do
+      resources :generations, param: :generation_id, only: [:new, :create, :update, :destroy] do
         member do
           post :activate
           get  :certificate
+          post :upload
           get  :key
         end
       end

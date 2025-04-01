@@ -19,9 +19,6 @@ module ForemanX509
       end
     end
 
-    def edit
-    end
-
     def update
       if @generation.update(generation_params)
         process_success object: @generation, redirect: certificate_path(@certificate)

@@ -25,8 +25,16 @@ module ForemanX509
         api :POST, '/certificates/:certificate_id/generations/:id/certificate', N_('Upload the generation certificate')
         param :certificate_id, Integer, desc: N_('ID of the owning certificate')
         param :id, Integer, desc: N_('ID of the generation')
+        param :certificate, desc: N_('Certificate')
         def certificate
-          send_data @generation.certificate.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_cert.pem"
+          if request.get?
+            send_data @generation.certificate.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_cert.pem"
+          else # post?
+            certificate = params[:generation], :certificate)
+            params[:generation][:certificate] = certificate.read if certificate.respond_to?(:read)
+
+            render :show
+          end
         end
 
         api :GET, '/certificates/:certificate_id/generations/:id/request', N_('Download the generation request')
