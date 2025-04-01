@@ -11,7 +11,7 @@ module ForemanX509
     delegate :name, to: :certificate
     delegate :to_pem, to: :request
 
-    before_save :create_request, unless: request?
+    before_save :create_request, unless: :request?
 
     private
 
