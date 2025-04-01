@@ -3,7 +3,7 @@ module ForemanX509
     module V2
       class RequestsController < BaseController
         resource_description do
-          resource_id 'certificates'
+          resource_id 'requests'
           api_version 'v2'
           api_base_url '/foreman_x509/api'
         end
