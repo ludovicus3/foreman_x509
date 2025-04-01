@@ -1,33 +1,40 @@
 module ForemanX509
   class Builder
-    def self.build_generation(subject)
-      builder = new(subject)
-      subject.generations.build(certificate: builder.certificate, request: builder.request, key: builder.key)
+    def self.create(subject)
+      new(subject).create
     end
 
-    def self.create_generation(subject)
-      builder = new(subject)
-      subject.generations.create(certificate: builder.certificate, request: builder.request, key: builder.key)
-    end
-
-    attr_reader :subject, :issuer, :certificate, :request, :key
+    attr_reader :subject, :issuer, :request, :generation
 
     def initialize(subject)
       @subject = subject
       @issuer = subject.issuer
       @issuer ||= Issuer.new(certificate: subject) if subject.can_self_sign?
-      @issuer ||= Issuer.new(certificate: Certificate.new)
+    end
 
-      @key = (subject.key || OpenSSL::PKey::RSA.new(key_bits))
-      
-      @certificate = OpenSSL::X509::Certificate.new unless issuer.external?
-      @request = OpenSSL::X509::Request.new if issuer.external?
+    def create
+      @generation = subject.generations.create(key: key)
 
-      build_certificate
-      build_request
+      if issuer
+        build_certificate
+
+        generation.update(certificate: certificate)
+      else
+        @request = Request.create(certificate: @subject, generation: @generation)
+      end
+
+      generation
     end
 
     private
+
+    def key
+      @key ||= (subject.key || OpenSSL::PKey::RSA.new(subject.key_bits))
+    end
+
+    def certificate
+      @certificate ||= OpenSSL::X509::Certificate.new
+    end
 
     def self_signing?
       issuer.certificate == subject
@@ -52,24 +59,6 @@ module ForemanX509
       certificate.sign(signing_key, issuer.digest)
     end
 
-    def build_request
-      return unless issuer.external?
-
-      request.public_key = key.public_key
-      request.version = 0
-      request.subject = subject.subject
-
-      request.add_attribute OpenSSL::X509::Attribute.new('extReq', OpenSSL::ASN1::Set([OpenSSL::ASN1::Sequence(request_extensions)]))
-
-      request.sign(key, subject.digest)
-    end
-
-    def request_extensions
-      subject.requested_extensions.map do |key, value|
-        extension_factory.create_extension(key, value)
-      end
-    end
-
     def certificate_extensions
       issuer.certificate_extensions(subject.requested_extensions, subject.certificate_extensions_section).each do |key, value|
         extension = extension_factory.create_extension(key, value)
@@ -77,13 +66,8 @@ module ForemanX509
       end
     end
 
-    def key_bits
-      return 4096 if subject.configuration.get_value('req', 'default_bits').nil?
-      subject.configuration.get_value('req', 'default_bits').to_i
-    end
-
     def extension_factory
-      @extension_factory ||= OpenSSL::X509::ExtensionFactory.new(signing_certificate, certificate, request)
+      @extension_factory ||= OpenSSL::X509::ExtensionFactory.new(signing_certificate, certificate, nil)
     end
 
     def signing_certificate

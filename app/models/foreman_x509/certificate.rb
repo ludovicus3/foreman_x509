@@ -11,10 +11,12 @@ module ForemanX509
     has_many :generations, class_name: 'ForemanX509::Generation', foreign_key: :owner_id, inverse_of: :owner
     has_one :generation, -> { where(foreman_x509_generations: { active: true }) }, class_name: 'ForemanX509::Generation', foreign_key: :owner_id
     accepts_nested_attributes_for :generation
+
+    delegate :certificate, :key, to: :generation, allow_nil: true
+
+    has_one :request, class_name: 'ForemanX509::Request', inverse_of: :certificate
     
     serialize :configuration, ForemanX509::Serializer::Configuration
-
-    delegate :certificate, :request, :key, to: :generation, allow_nil: true
 
     validates :name, format: { with: /\A[a-z][a-z0-9.-]*(?<!-)\z/, message: _("Invalid name format!") }
     validates :certificate, presence: true, if: -> { configuration.nil? }
@@ -53,6 +55,11 @@ module ForemanX509
       configuration.get_value('req', 'x509_extensions')
     end
 
+    def key_bits
+      return 4096 if configuration.get_value('req', 'default_bits').nil?
+      configuration.get_value('req', 'default_bits').to_i
+    end
+
     private
 
     def configuration_has_required_fields
@@ -62,7 +69,7 @@ module ForemanX509
     def ensure_active_generation
       return if configuration.blank?
 
-      ForemanX509::Builder.create_generation(self)
+      ForemanX509::Builder.create(self)
     end
   end
 end

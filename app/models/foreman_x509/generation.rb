@@ -2,14 +2,16 @@ module ForemanX509
   class Generation < ::ApplicationRecord
     belongs_to :owner, class_name: 'ForemanX509::Certificate', inverse_of: :generations
     has_one :issuer, through: :owner, class_name: 'ForemanX509::Issuer'
+
+    has_one :request, class_name: 'ForemanX509::Request', inverse_of: :generation
     
     serialize :certificate, ForemanX509::Serializer::Certificate
-    serialize :request, ForemanX509::Serializer::Request
     serialize :key, ForemanX509::Serializer::Key
 
     delegate :not_before, :not_after, to: :certificate, allow_nil: true
 
     before_save :deactivate_previous_generation, if: :active?
+    after_save :delete_associated_request, if: :certificate?
 
     validates :active, presence: true, if: :active?
     validates :active, uniqueness: { scope: :owner_id }, if: :active?
@@ -30,7 +32,7 @@ module ForemanX509
     end
 
     def expired?
-      return false if certificate.nil?
+      return false unless certificate?
       
       not (certificate.not_before..certificate.not_after).include? Time.now
     end
@@ -43,6 +45,10 @@ module ForemanX509
 
     def deactivate_previous_generation
       owner.generations.where(active: true).update_all(active: false) unless owner.nil?
+    end
+
+    def delete_associated_request
+      request.destroy
     end
   end
 end
