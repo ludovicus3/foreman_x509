@@ -37,7 +37,7 @@ ForemanX509::Engine.routes.draw do
 
     resources :requests, only: [:show]
 
-    constrains(owner_id: /[^\/]+/) do
+    constraints(owner_id: /[^\/]+/) do
       resources :certificates, only: [], param: :owner_id do
         member do
           resources :generations, only: [:new, :create, :update, :destroy] do
