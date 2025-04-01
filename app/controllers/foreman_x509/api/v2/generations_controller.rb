@@ -8,7 +8,6 @@ module ForemanX509
         api :GET, '/certificates/:certificate_id/generations', N_('List certificate generations')
         param :certificate_id, Integer, desc: N_('ID of the owning certificate')
         param_group :search_and_pagination, ::Api::V2::BaseController
-        add_scoped_search_description_for(Generation)
         def index
           @generations = resource_scope_for_index
         end
