@@ -23,7 +23,7 @@ module ForemanX509
       if @generation.update(generation_params)
         process_success object: @generation, redirect: certificate_path(@owner)
       else
-        process_error object: @generation, redirect: edit_certificate_generation_path(@owner, @generation)
+        process_error object: @generation, redirect: request_path(@generation.request)
       end
     end
 
