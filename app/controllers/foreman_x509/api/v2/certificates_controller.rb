@@ -10,7 +10,7 @@ module ForemanX509
 
         before_action :find_resource, only: [:show, :destroy]
 
-        api :GET, '/cycles', N_('List cycles')
+        api :GET, '/certificates', N_('List certificates')
         param_group :search_and_pagination, ::Api::V2::BaseController
         add_scoped_search_description_for(Certificate)
         def index
