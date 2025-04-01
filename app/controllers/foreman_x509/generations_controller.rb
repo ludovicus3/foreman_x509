@@ -6,11 +6,11 @@ module ForemanX509
     before_action :upload_certificate_file, only: [:create, :update]
 
     def new
-      @generation = @certificate.generations.build
+      @generation = ForemanX509::Generation.new(owner: @certificate)
     end
 
     def create
-      @generation = ForemanX509::Builder.create_generation(@certificate) if generation_params.empty?
+      @generation = ForemanX509::Builder.create(@certificate) if generation_params.empty?
       @generation = @certificate.generations.create(generation_params) unless generation_params.empty?
       if @generation
         process_success object: @generation, redirect: certificate_path(@certificate)
@@ -36,10 +36,6 @@ module ForemanX509
 
     def certificate
       send_data @generation.certificate.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_cert.pem"
-    end
-
-    def signing_request
-      send_data @generation.request.to_pem, filename: "#{@generation.owner.name}-#{@generation.id}_req.pem"
     end
 
     def key

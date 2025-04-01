@@ -8,6 +8,9 @@ module ForemanX509
     validates :certificate, presence: true
     validates :generation, presence: true
 
+    delegate :name, to: :certificate
+    delegate :to_pem, to: :request
+
     before_save :create_request, unless: request?
 
     private
