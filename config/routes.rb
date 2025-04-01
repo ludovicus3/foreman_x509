@@ -10,16 +10,20 @@ ForemanX509::Engine.routes.draw do
         end
       end
 
-      resources :certificates, only: [:index, :create, :show, :update, :destroy] do
-        resources :generations, only: [:index, :create, :destroy] do
-          member do
-            post :activate
-            get  :certificate
-            post :certificate
-            get  :key
+      resources :certificates, only: [], param: :owner_id do
+        member do
+          resources :generations, only: [:index, :create, :update, :destroy] do
+            member do
+              get :certificate
+              get :key
+              post :activate
+              post :upload
+            end
           end
         end
+      end
 
+      resources :certificates, only: [:index, :create, :show, :update, :destroy] do
         member do
           get :certificate
           get :key
@@ -33,16 +37,20 @@ ForemanX509::Engine.routes.draw do
 
     resources :requests, only: [:show]
 
-    resources :certificates do
-      resources :generations, param: :generation_id, only: [:new, :create, :update, :destroy] do
-        member do
-          post :activate
-          get  :certificate
-          post :upload
-          get  :key
+    resources :certificates, only: [], param: :owner_id do
+      member do
+        resources :generations, only: [:new, :create, :update, :destroy] do
+          member do
+            post :activate
+            get  :certificate
+            post :upload
+            get  :key
+          end
         end
       end
-
+    end
+    
+    resources :certificates do
       member do
         get :certificate
         get :key

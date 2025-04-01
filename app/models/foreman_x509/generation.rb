@@ -13,6 +13,8 @@ module ForemanX509
     before_save :deactivate_previous_generation, if: :active?
     after_save :delete_associated_request, if: :certificate?
 
+    scoped_search relation: :owner, on: :name, complete_value: true, rename: :owner
+
     validates :active, presence: true, if: :active?
     validates :active, uniqueness: { scope: :owner_id }, if: :active?
     validate :validate_certificate_key_pairing, unless: -> { certificate.blank? or key.blank? }

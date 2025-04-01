@@ -1,29 +1,29 @@
 module ForemanX509
   class GenerationsController < ::ApplicationController
 
-    before_action :find_certificate
+    before_action :find_owner
     before_action :find_generation, except: [:new, :create]
     before_action :upload_certificate_file, only: [:create, :update]
 
     def new
-      @generation = ForemanX509::Generation.new(owner: @certificate)
+      @generation = ForemanX509::Generation.new(owner: @owner)
     end
 
     def create
-      @generation = ForemanX509::Builder.create(@certificate) if generation_params.empty?
-      @generation = @certificate.generations.create(generation_params) unless generation_params.empty?
+      @generation = ForemanX509::Builder.create(@owner) if generation_params.empty?
+      @generation = @owner.generations.create(generation_params) unless generation_params.empty?
       if @generation
-        process_success object: @generation, redirect: certificate_path(@certificate)
+        process_success object: @generation, redirect: certificate_path(@owner)
       else
-        process_error object: @generation, redirect: certificate_path(@certificate)
+        process_error object: @generation, redirect: certificate_path(@owner)
       end
     end
 
     def update
       if @generation.update(generation_params)
-        process_success object: @generation, redirect: certificate_path(@certificate)
+        process_success object: @generation, redirect: certificate_path(@owner)
       else
-        process_error object: @generation, redirect: edit_certificate_generation_path(certificate_id: @certificate, id: @generation)
+        process_error object: @generation, redirect: edit_certificate_generation_path(@owner, @generation)
       end
     end
 
@@ -41,16 +41,16 @@ module ForemanX509
 
     def destroy
       if @generation.destroy
-        process_success object: @generation, redirect: certificate_path(@certificate)
+        process_success object: @generation, redirect: certificate_path(@owner)
       else
-        process_error object: @generation, redirect: certificate_path(@certificate)
+        process_error object: @generation, redirect: certificate_path(@owner)
       end
     end
 
     private
 
-    def find_certificate
-      @certificate ||= ForemanX509::Certificate.friendly.find(params[:certificate_id])
+    def find_owner
+      @owner ||= ForemanX509::Certificate.friendly.find(params[:owner_id])
     end
 
     def find_generation
