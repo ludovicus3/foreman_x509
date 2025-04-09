@@ -20,6 +20,11 @@ module ForemanX509
         def download
           send_data @request.to_pem, filename: "#{@request.name}_req.pem"
         end
+
+        def resource_class
+          ForemanX509::Request
+        end
+        
       end
     end
   end
