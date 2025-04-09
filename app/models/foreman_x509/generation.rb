@@ -50,7 +50,7 @@ module ForemanX509
     end
 
     def delete_associated_request
-      request.destroy if request?
+      request.destroy unless request.nil?
     end
   end
 end
