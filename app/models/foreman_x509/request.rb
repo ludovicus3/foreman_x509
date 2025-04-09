@@ -28,7 +28,7 @@ module ForemanX509
     end
 
     def request_extensions
-      subject.requested_extensions.map do |key, value|
+      certificate.requested_extensions.map do |key, value|
         extension_factory.create_extension(key, value)
       end
     end
