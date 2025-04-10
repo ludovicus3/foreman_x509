@@ -1,4 +1,4 @@
-<%= form_for @request.generation, method: :post, url: certificate_generation_path(@request.certificate, @request.generation) do |f| %>
+<%= form_for @request.generation, method: :post, url: upload_generation_path(@request.certificate, @request.generation) do |f| %>
   <div class="clearfix">
     <div class="form-group">
       <label class="col-md-2 control-label">Request</label>
