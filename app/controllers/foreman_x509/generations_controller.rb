@@ -13,7 +13,7 @@ module ForemanX509
       @generation = ForemanX509::Builder.create(@owner) if generation_params.empty?
       @generation = @owner.generations.create(generation_params) unless generation_params.empty?
       if @generation
-        process_success object: @generation, redirect: certificate_path(@owner)
+        process_success object: @generation, success_redirect: certificate_path(@owner)
       else
         process_error object: @generation, redirect: certificate_path(@owner)
       end
@@ -21,7 +21,7 @@ module ForemanX509
 
     def update
       if @generation.update(generation_params)
-        process_success object: @generation, redirect: certificate_path(@owner)
+        process_success object: @generation, success_redirect: certificate_path(@owner)
       else
         process_error object: @generation, redirect: request_path(@generation.request)
       end
@@ -41,7 +41,7 @@ module ForemanX509
 
     def destroy
       if @generation.destroy
-        process_success object: @generation, redirect: certificate_path(@owner)
+        process_success object: @generation, success_redirect: certificate_path(@owner)
       else
         process_error object: @generation, redirect: certificate_path(@owner)
       end
