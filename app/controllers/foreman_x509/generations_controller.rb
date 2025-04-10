@@ -29,6 +29,8 @@ module ForemanX509
 
     def activate
       @generation.activate!
+      
+      redirect_to certificate_path(@owner)
     end
 
     def certificate
