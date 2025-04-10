@@ -44,7 +44,6 @@ ForemanX509::Engine.routes.draw do
             member do
               post :activate
               get  :certificate
-              post :upload
               get  :key
             end
           end
