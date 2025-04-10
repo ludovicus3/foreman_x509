@@ -4,5 +4,5 @@
     <%= f.text_area :certificate, rows: 10, class: "form-control" %>
     <%= f.file_field :certificate_file %>
   <% end %>
-  <%= submit_or_cancel f, false, { cancel_path: certificate_path(@certificate) } %>
+  <%= submit_or_cancel f, false, { cancel_path: certificate_path(@request.certificate) } %>
 <% end %>
