@@ -1,7 +1,9 @@
 <%= form_for @request.generation, url: certificate_generation_path(@request.certificate, @request.generation) do |f| %>
-  <div class="form-group">
-    <div class="col-md-2 control-label">Request</div>
-    <pre class="col-md-4"><%= @request.to_pem %></pre>
+  <div class="clearfix">
+    <div class="form-group">
+      <div class="col-md-2 control-label">Request</div>
+      <pre class="col-md-4"><%= @request.to_pem %></pre>
+    </div>
   </div>
   <%= field(f, :certificate) do %>
     <%= f.text_area :certificate, rows: 10, class: "form-control" %>
