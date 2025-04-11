@@ -65,7 +65,7 @@ module ForemanX509
     end
 
     def generation_params
-      params.require(:generation).permit(:certificate)
+      params.require(:generation).permit(:certificate, :active)
     end
   end
 end
