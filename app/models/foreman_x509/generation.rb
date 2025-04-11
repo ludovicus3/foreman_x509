@@ -11,6 +11,7 @@ module ForemanX509
     delegate :not_before, :not_after, to: :certificate, allow_nil: true
 
     before_save :deactivate_previous_generation, if: :active?
+    before_save :activate_automatically, if: :will_save_change_to_certificate?
     after_save :delete_associated_request, if: :certificate?
 
     scoped_search relation: :owner, on: :name, complete_value: true, rename: :owner
@@ -50,11 +51,11 @@ module ForemanX509
     end
 
     def delete_associated_request
-      unless request.nil?
-        request.destroy
-        
-        activate!
-      end
+      request.destroy unless request.nil?
+    end
+
+    def activate_automatically
+      active = true # if Setting[:certs_activate_new_generation_automatically]
     end
   end
 end
