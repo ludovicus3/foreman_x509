@@ -12,6 +12,11 @@ module ForemanX509
       end
     end
 
+    initializer 'foreman_x509.register_mime_tyeps' do |app|
+      Mime::Type.register_alias "application/x-pem-file", :pem
+      Mime::Type.register_alias "application/x-x509-ca-cert", :der
+    end
+
     initializer 'foreman_x509.register_plugin', :before => :finisher_hook do |app|
       require 'foreman_x509/plugin'
     end
