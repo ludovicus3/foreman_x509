@@ -4,11 +4,7 @@ ForemanX509::Engine.routes.draw do
 
       resources :issuers, only: [:index, :create, :show, :update, :destroy]
 
-      resources :requests, only: [:index, :show] do
-        member do
-          get :download
-        end
-      end
+      resources :requests, only: [:index, :show]
 
       resources :certificates, only: [], param: :owner_id do
         member do
