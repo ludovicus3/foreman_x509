@@ -5,11 +5,14 @@ module ForemanX509
     end
 
     attr_reader :subject, :issuer, :request, :generation
+    attr_accessor :activate
 
-    def initialize(subject)
+    def initialize(subject, **options)
       @subject = subject
       @issuer = subject.issuer
       @issuer ||= Issuer.new(certificate: subject) if subject.can_self_sign?
+
+      @activate = options.fetch(:activate, true)
     end
 
     def create
@@ -18,7 +21,7 @@ module ForemanX509
       if issuer
         build_certificate
 
-        generation.update(certificate: certificate)
+        generation.update(certificate: certificate, active: activate)
       else
         @request = Request.create(certificate: @subject, generation: @generation)
       end
