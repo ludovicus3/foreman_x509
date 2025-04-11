@@ -24,17 +24,6 @@ module ForemanX509
         def certificate
         end
 
-        api :POST, '/certificates/:owner_id/generations/:id/upload', N_('Upload the generation certificate')
-        param :certificate_id, Integer, desc: N_('ID of the owning certificate')
-        param :id, Integer, desc: N_('ID of the generation')
-        param :certificate, String, desc: N_('Certificate')
-        def upload
-          certificate = params[:generation][:certificate]
-          params[:generation][:certificate] = certificate.read if certificate.respond_to?(:read)
-
-          render :show
-        end
-
         api :GET, '/certificates/:owner_id/generations/:id/key', N_('Download the generation key')
         param :certificate_id, Integer, desc: N_('ID of the owning certificate')
         param :id, Integer, desc: N_('ID of the generation')

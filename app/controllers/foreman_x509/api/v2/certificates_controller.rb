@@ -26,6 +26,18 @@ module ForemanX509
         def update
         end
 
+        api :GET, '/certificates/:id/certificate', N_('Download the PEM format certificate')
+        param :id, Integer, desc: N_('Id of the certificate')
+        def certificate
+          send_data @certificate.certificate.to_pem, filename: "#{@certificate.name}_cert.pem"
+        end
+
+        api :GET, '/certificate/:id/key', N_('Download the PEM format key')
+        param :id, Integer, desc: N_('Id of the key')
+        def key
+          send_data @certificate.key.to_pem, filename: "#{@certificate.name}_key.pem"
+        end
+
         api :DELETE, '/certificates/:id', N_('Destroy a certificate')
         param :id, Integer, desc: N_('Id of the certificate')
         def destroy
