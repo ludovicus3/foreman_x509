@@ -15,6 +15,11 @@ module ForemanX509
         end
 
         def show
+          respond_to do |format|
+            format.der { send_data @request.to_der, filename: "#{@request.name}_req.der" }
+            format.pem { send_data @request.to_pem, filename: "#{@request.name}_req.pem" }
+            format.json
+          end
         end
 
         def download

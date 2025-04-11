@@ -9,7 +9,7 @@ module ForemanX509
     validates :generation, presence: true
 
     delegate :name, to: :certificate
-    delegate :to_pem, to: :request
+    delegate :to_pem, :to_der, to: :request
 
     before_save :create_request, unless: :request?
 

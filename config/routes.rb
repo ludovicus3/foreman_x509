@@ -16,7 +16,6 @@ ForemanX509::Engine.routes.draw do
             member do
               get :certificate
               get :key
-              post :activate
             end
           end
         end
@@ -41,7 +40,6 @@ ForemanX509::Engine.routes.draw do
         member do
           resources :generations, only: [:new, :create, :update, :destroy] do
             member do
-              post :activate
               get  :certificate
               get  :key
             end

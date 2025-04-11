@@ -36,10 +36,10 @@ module ForemanX509
 
       params = [generation.owner, generation]
 
-      buttons << link_to(_('Activate'), activate_generation_path(*params), method: :post) if generation.status == 'inactive'
+      buttons << link_to(_('Activate'), generation_path(*params, generation: { active: true }), method: :put) if generation.status == 'inactive'
       buttons << link_to(_('Download Certificate'), certificate_generation_path(*params)) unless generation.status == 'pending'
       buttons << link_to(_('Upload Certificate'), request_path(generation.request)) if generation.status == 'pending'
-      buttons << link_to(_('Download Request'), download_api_request_path(generation.request)) if generation.status == 'pending'
+      buttons << link_to(_('Download Request'), request_path(generation.request, format: :pem)) if generation.status == 'pending'
       buttons << link_to(_('Download Key'), key_generation_path(*params)) unless generation.key.nil?
       buttons << link_to(_('Delete'), generation_path(*params), method: :delete, data: { confirm: _("Are you sure?") }) unless generation.active?
 
