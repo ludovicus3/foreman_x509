@@ -1,0 +1,24 @@
+<% title _("Issuers") %>
+
+<table class="<%= table_css_classes 'table-condensed table-fixed' %>">
+  <thead>
+    <tr>
+      <th><%= sort :name, as: _('Name') %></th>
+      <th class="col-md-1"><%= _('Certificates') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @issuers.each do |issuer| %>
+      <tr>
+        <td>
+          <%= link_to issuer.name, issuer_path(issuer) %>
+        </td>
+        <td>
+          <%= issuer.certificates.count %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate_with_info @issuers %>
