@@ -16,6 +16,8 @@ module ForemanX509
 
     validate :validate_authority_section, unless: -> { configuration.blank? }
 
+    scoped_search relation: :certificate, on: :name, complete_value: true
+
     def external?
       configuration.nil?
     end
