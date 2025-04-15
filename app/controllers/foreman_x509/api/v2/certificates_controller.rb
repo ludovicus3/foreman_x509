@@ -26,6 +26,12 @@ module ForemanX509
         def update
         end
 
+        api :GET, '/certificates/:id/chain', N_('Download the PEM format chain')
+        param :id, Integer, desc: N_('Id of the certificate')
+        def chain
+          send_data @certificate.issuer.bundle.map(&:to_pem).join('\n'), filename: "#{@certificate.name}_ca.pem"
+        end
+
         api :GET, '/certificates/:id/certificate', N_('Download the PEM format certificate')
         param :id, Integer, desc: N_('Id of the certificate')
         def certificate

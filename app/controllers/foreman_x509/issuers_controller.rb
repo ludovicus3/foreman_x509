@@ -22,6 +22,10 @@ module ForemanX509
     def show
     end
 
+    def bundle
+      send_data @issuer.bundle.map(&:to_pem).join('\n'), filename: "#{@issuer.name}_bundle.pem"
+    end
+
     def destroy
       if @issuer.destroy
         process_success object: @issuer

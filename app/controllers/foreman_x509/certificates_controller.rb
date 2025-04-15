@@ -33,7 +33,7 @@ module ForemanX509
       end
     end
 
-    def ca_bundle
+    def chain
       send_date @certificate.issuer.bundle.map(&:to_pem).join('\n'), filename: "#{@certificate.name}_ca.pem"
     end
   

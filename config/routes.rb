@@ -2,7 +2,11 @@ ForemanX509::Engine.routes.draw do
   namespace :api do
     scope '(:apiv)', module: :v2, defaults: { apiv: 'v2' }, apiv: /v1|v2/, constraints: ApiConstraints.new(version: 2, default: true) do
 
-      resources :issuers, only: [:index, :create, :show, :update, :destroy]
+      resources :issuers, only: [:index, :create, :show, :update, :destroy] do
+        member do
+          get :bundle
+        end
+      end
 
       resources :requests, only: [:index, :show]
 
@@ -19,6 +23,7 @@ ForemanX509::Engine.routes.draw do
 
       resources :certificates, only: [:index, :create, :show, :update, :destroy] do
         member do
+          get :chain
           get :certificate
           get :key
         end
@@ -27,7 +32,11 @@ ForemanX509::Engine.routes.draw do
   end
 
   constraints(id: /[^\/]+/) do
-    resources :issuers, only: [:index, :new, :create, :show, :destroy ]
+    resources :issuers, only: [:index, :new, :create, :show, :destroy ] do
+      member do
+        get :bundle
+      end
+    end
 
     resources :requests, only: [:show]
 
@@ -46,7 +55,7 @@ ForemanX509::Engine.routes.draw do
     
     resources :certificates do
       member do
-        get :ca_bundle
+        get :chain
         get :certificate
         get :key
       end
