@@ -60,6 +60,12 @@ module ForemanX509
       end
     end
 
+    def bundle
+      return [ certificate.certificate ] if certificate.issuer.nil? or certificate.issuer == self
+
+      [ certificate.certificate ] + certificate.issuer.bundle
+    end
+
     private
 
     def default_certificate_extensions_section

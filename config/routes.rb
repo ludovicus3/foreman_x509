@@ -46,6 +46,7 @@ ForemanX509::Engine.routes.draw do
     
     resources :certificates do
       member do
+        get :ca_bundle
         get :certificate
         get :key
       end

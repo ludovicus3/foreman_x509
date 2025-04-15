@@ -32,6 +32,10 @@ module ForemanX509
         process_error object: @certificate
       end
     end
+
+    def ca_bundle
+      send_date @certificate.issuer.bundle.map(&:to_pem).join('\n'), filename: "#{@certificate.name}_ca.pem"
+    end
   
     def certificate
       send_data @certificate.certificate.to_pem, filename: "#{@certificate.name}_cert.pem"
