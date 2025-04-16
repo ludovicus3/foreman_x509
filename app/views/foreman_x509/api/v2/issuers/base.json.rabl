@@ -1,3 +1,3 @@
 object @issuer
 
-attributes :id
+attributes :id, :name
