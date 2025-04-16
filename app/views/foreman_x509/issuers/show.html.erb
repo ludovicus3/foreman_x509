@@ -1,0 +1,52 @@
+<% title @issuer.name %>
+
+<%
+items = [{ caption: _('Issuers'), url: issuers_path },
+         { caption: @issuer.name }]
+
+breadcrumbs(resource_url: api_issuers_path, 
+            name_field: 'name',
+            switcher_item_url: issuer_path(':id'),
+            items: items)
+%>
+
+<ul id="host-show-tabs" class="nav nav-tabs">
+  <li class="active"><a href="#primary" data-toggle="tab"><%= _("Details") %></a></li>
+  <li><a href="#configuration" data-toggle="tab"><%= _("Configuration") %></a></li>
+  <li><a href="#certificates" data-toggle="tab"><%= _("Certificates") %></a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="primary">
+    <pre><%= certificate_details %></pre>
+  </div>
+  <div class="tab-pane" id="configuration">
+    <pre><%= @issuer.configuration.to_s %></pre>
+  </div>
+  <div class="tab-pane" id="certificates">
+    <table class="<%= table_css_classes 'table-condensed table-fixed' %>">
+      <thead>
+        <tr>
+          <th class="col-md-2"><%= sort :name, as: _('Name') %></th>
+          <th class="col-md-1"><%= _('Not Before') %></th>
+          <th class="col-md-1"><%= _('Not After') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @issuer.certificates.each do |certificate| %>
+          <tr>
+            <td>
+              <%= link_to certificate.name, certificate_path(certificate) %>
+            </td>
+            <td>
+              <%= certificate.not_before.httpdate unless certificate.not_before.nil? %>
+            </td>
+            <td>
+              <%= certificate.not_after.httpdate unless certificate.not_after.nil? %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
