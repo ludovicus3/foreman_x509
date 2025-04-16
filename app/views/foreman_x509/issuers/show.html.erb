@@ -18,7 +18,7 @@ breadcrumbs(resource_url: api_issuers_path,
 
 <div class="tab-content">
   <div class="tab-pane active" id="primary">
-    <pre><%= certificate_details %></pre>
+    <pre><%= @issuer.certificate.certificate.to_text %></pre>
   </div>
   <div class="tab-pane" id="configuration">
     <pre><%= @issuer.configuration.to_s %></pre>
