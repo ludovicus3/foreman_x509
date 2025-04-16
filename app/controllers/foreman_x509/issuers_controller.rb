@@ -34,6 +34,10 @@ module ForemanX509
       end
     end
 
+    def resource_class
+      ForemanX509::Issuer
+    end
+
     private
 
     def issuer_params_for_create
