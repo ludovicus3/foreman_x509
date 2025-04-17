@@ -34,7 +34,7 @@ module ForemanX509
     end
 
     def chain
-      send_date @certificate.issuer.bundle.map(&:to_pem).join('\n'), filename: "#{@certificate.name}_ca.pem"
+      send_data @certificate.issuer.bundle.map(&:to_pem).join('\n'), filename: "#{@certificate.name}_ca.pem"
     end
   
     def certificate
