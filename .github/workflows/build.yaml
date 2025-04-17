@@ -1,0 +1,87 @@
+name: Build Foreman X509
+
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - develop
+env:
+  GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_TOKEN }}
+  RAILS_ENV: production
+  FOREMAN_VERSION: 3.1-stable
+  RUBY_VERSION: '2.7'
+  NODE_VERSION: '12'
+  DATABASE_URL: nulldb://nohost
+  BUNDLER_SKIPPED_GROUPS: "test development openid libvirt journald facter console"
+  FOREMAN_FQDN: foreman.example.com
+  FOREMAN_DOMAIN: example.com
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout Foreman X509
+      uses: actions/checkout@v4
+      with:
+        path: foreman_x509
+    - name: Checkout Foreman
+      uses: actions/checkout@v4
+      with:
+        repository: theforeman/foreman
+        ref: ${{ env.FOREMAN_VERSION }}
+        path: foreman
+    - name: Setup Nodejs
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ env.RUBY_VERSION }}
+    - name: Install Dependencies
+      run: |
+        sudo apt-get install -y libqpid-proton11-dev libxml2-dev libcurl4-openssl-dev gettext
+    - name: Configure Foreman
+      working-directory: foreman
+      run: |
+        cat <<EOF > bundler.d/foreman_x509.rb
+        gem 'foreman_x509', path: '$GITHUB_WORKSPACE/foreman_x509'
+        EOF
+
+        bundle config set --local without "${BUNDLER_SKIPPED_GROUPS}"
+        bundle config set --local clean true
+        bundle config set --local path vendor
+        bundle config set --local jobs 5
+        bundle config set --local retry 3
+
+        bundle install
+        bundle binstubs --all
+
+        rm -rf vendor/ruby/*/cache/*.gem
+        find vendor/ruby/*/gems -name "*.c" -delete
+        find vendor/ruby/*/gems -name "*.o" -delete
+
+    - name: Precompile Foreman Assets
+      working-directory: foreman
+      run: |
+        make -C locale all-mo
+        mv -v db/schema.rb.nulldb db/schema.rb
+        bundle exec bin/rake assets:clean assets:precompile
+
+        echo "NodeJS Version: $(node --version)"
+        npm install --omit=optional
+        ./node_modules/webpack/bin/webpack.js --config config/webpack.config.js
+        npm run analyze
+    - name: Compile Foreman X509 Assets
+      working-directory: foreman
+      run: |
+        bundle exec bin/rake plugin:assets:precompile[foreman_x509] --trace
+    - name: Release Gem
+      if: contains(github.ref, 'refs/tags/v')
+      working-directory: foreman_x509
+      run: |
+        gem build *.gemspec
+        gem push *.gem
